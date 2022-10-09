@@ -1,0 +1,5 @@
+package com.martinps.model;
+
+public class Producto {
+
+}

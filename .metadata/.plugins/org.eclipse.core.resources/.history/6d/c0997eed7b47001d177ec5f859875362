@@ -1,0 +1,5 @@
+package com.martinps.dao;
+
+public class ProductoDAO {
+
+}

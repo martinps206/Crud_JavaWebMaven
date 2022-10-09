@@ -1,0 +1,73 @@
+package com.martinps.dao;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+import com.martinps.conexion.Conexion;
+import com.martinps.model.Producto;
+import com.mysql.cj.jdbc.PreparedStatement;
+
+public class ProductoDAO {
+	
+	private Connection connection;
+	private PreparedStatement statement;
+	private boolean estadoOperacion;
+	
+	// guardar producto
+		public boolean guardar(Producto producto) throws SQLException {
+			String sql=null;
+			estadoOperacion=false;
+			connection=obtenerConexion();
+			
+			try {
+				connection.setAutoCommit(false);
+				sql="INSERT INT productos (id, nombre, cantidad, precio, fecha_crear,fecha_actualizar) VALUES(?,?,?,?,?,?)";
+				statement = (PreparedStatement) connection.prepareStatement(sql);
+				
+				statement.setString(1, null);
+				statement.setString(2, producto.getNombre());
+				statement.setDouble(3, producto.getCantidad());
+				statement.setDouble(4, producto.getPrecio());
+				statement.setDate(5, producto.getFechaCrear());
+				statement.setDate(6, producto.getFechaActualizar());
+				
+				estadoOperacion=statement.executeUpdate()>0;
+				
+				connection.commit();
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				connection.rollback();
+				e.printStackTrace();
+			}
+			
+			return estadoOperacion;
+		}
+
+		// editar producto
+		public boolean editar(Producto producto) {
+			return true;
+		}
+
+		// eliminar producto
+		public boolean eliminar(int idProducto) {
+			return true;
+		}
+
+		// obtener lista de productos
+		public List<Producto> obtenerProductos() {
+			return null;
+		}
+
+		// obtener lista de productos
+		public Producto obtenerProducto(int idProducto) {
+			return null;
+		}
+		
+		//obtener conexion pool
+		private Connection obtenerConexion() throws SQLException {
+			return Conexion.getConnection();
+		}
+
+}
